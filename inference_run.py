@@ -17,7 +17,6 @@ from collections import namedtuple
 # %% [markdown]
 # # HyenaDNA
 # 
-# 
 
 # %%
 #@title Hyena layer

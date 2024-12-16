@@ -1,0 +1,15 @@
+
+Lmod is automatically replacing "gcc/11.4.0" with "nvidia/24.5".
+
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) cuda/11.8.0     2) openmpi/4.1.6
+
+/var/spool/slurmd/job5886746/slurm_script: line 19: /u/pmaldonadocatala/.conda/etc/profile.d/conda.sh: No such file or directory
+usage: conda [-h] [-v] [--no-plugins] [-V] COMMAND ...
+conda: error: argument COMMAND: invalid choice: 'activate' (choose from 'clean', 'compare', 'config', 'create', 'info', 'init', 'install', 'list', 'notices', 'package', 'remove', 'uninstall', 'rename', 'run', 'search', 'update', 'upgrade', 'build', 'content-trust', 'convert', 'debug', 'develop', 'doctor', 'index', 'inspect', 'metapackage', 'render', 'repoquery', 'skeleton', 'server', 'verify', 'token', 'env', 'repo')
+Traceback (most recent call last):
+  File "/u/pmaldonadocatala/metabolic_classification/inference_run.py", line 4, in <module>
+srun: error: gpub022: task 0: Exited with exit code 1
+    import torch
+ModuleNotFoundError: No module named 'torch'

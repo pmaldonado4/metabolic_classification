@@ -1,0 +1,4 @@
+=== ENVIRONMENT ACTIVATION CHECK ===
+Using Python: /sw/spack/deltas11-2023-03/apps/linux-rhel8-zen/gcc-8.5.0/python-3.11.6-hkwn5gk/bin/python
+Python Version: Python 3.11.6
+Conda Environment: ml_env_2              *  /u/pmaldonadocatala/.conda/envs/ml_env_2
