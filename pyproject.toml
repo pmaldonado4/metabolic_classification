@@ -1,13 +1,12 @@
 [tool.poetry]
-name = "hyena-inference"
+name = "hyena-pretrained"
 version = "0.1.0"
 description = ""
 authors = ["pmaldonado4 <pmaldonado12@gmail.com>"]
 readme = "README.md"
-package-mode = false
 
 [tool.poetry.dependencies]
-python = "3.11.6"
+python = "^3.10"
 numpy = "1.24.3"
 torch = "^2.4.0"
 torchvision = "^0.19.0"
@@ -17,9 +16,6 @@ pytorch-lightning = "1.8.6"
 ninja = "^1.11.1.1"
 pandas = "2.1.0"
 pyfaidx = "^0.8.1.2"
-boto3 = "^1.35.80"
-ipykernel = "^6.29.5"
-jupyter = "^1.1.1"
 
 [tool.poetry.group.dev.dependencies]
 transformers = "4.26.1"
@@ -44,7 +40,6 @@ numerize = "^0.12"
 git-lfs = "^1.6"
 torchtext = "^0.18.0"
 datasets = "^2.21.0"
-ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]
