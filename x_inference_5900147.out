@@ -1,0 +1,2 @@
+Fetching file from S3: embedding_sequences/sequences_part_1.txt
+Error: The file does not contain a 'sequence' column.

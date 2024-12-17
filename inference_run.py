@@ -1477,7 +1477,7 @@ read_access_key = "L7J5V9NECMPRCRFLCAD7"
 read_secret_key = "AhcamdaEP7pHAJkCiklALCOh4lKd6ZcxT8HtqLuV"
 bucket_name = "metabolic-atac-peaks"
 endpoint_url = "https://rice1.osn.mghpcc.org"
-file_key = "embedding_sequences/peak_id_sequences_2.txt"  # Replace with the actual file name
+file_key = "embedding_sequences/sequences_part_1.txt" 
 embeddings_folder = "embeddings"
 
 # Initialize S3 client
@@ -1531,7 +1531,7 @@ def inference(sequences):
     """
     pretrained_model_name = 'hyenadna-tiny-1k-seqlen-2'  # Use your desired pretrained model
 
-    max_length = 1000 # Adjust based on your sequences and model capacity
+    max_length = 4400 # Adjust based on dataset (99th percentile is around 4300)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print("Using device:", device)
 
@@ -1590,15 +1590,15 @@ def inference(sequences):
 
     # Save embeddings locally
     local_file_path = "embeddings.pt"
-    torch.save(embeddings, local_file_path)
-    print(f"Embeddings saved locally at: {local_file_path}")
+    #torch.save(embeddings, local_file_path)
+    #print(f"Embeddings saved locally at: {local_file_path}")
 
     # Upload embeddings to S3
     save_embeddings_to_s3(local_file_path, bucket_name, embeddings_folder, "embeddings.pt")
 
     return embeddings
 
-# Example usage
+# run
 if __name__ == "__main__":
     try:
         sequences = fetch_sequences_from_s3(bucket_name, file_key)
