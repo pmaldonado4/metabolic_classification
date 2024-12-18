@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --gpus=1
 #SBATCH --mem=200G
-#SBATCH --time=12:00:00
+#SBATCH --time=48:00:00
 #SBATCH --account=bdhi-delta-gpu
 
 # Source Conda environment setup
