@@ -1189,169 +1189,6 @@ class CharacterTokenizer(PreTrainedTokenizer):
             cfg = json.load(f)
         return cls.from_config(cfg)
 
-# %% [markdown]
-# # Training! (and fine-tuning)
-
-# %%
-import torch.optim as optim
-
-"""
-We provide simple training code for the GenomicBenchmark datasets.
-"""
-
-
-def train(model, device, train_loader, optimizer, epoch, loss_fn, log_interval=10):
-    """Training loop."""
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data, target = data.to(device), target.to(device)
-        optimizer.zero_grad()
-        output = model(data)
-        loss = loss_fn(output, target.squeeze())
-        loss.backward()
-        optimizer.step()
-        if batch_idx % log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item()))
-
-def test(model, device, test_loader, loss_fn):
-    """Test loop."""
-    model.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, target in test_loader:
-            data, target = data.to(device), target.to(device)
-            output = model(data)
-            test_loss += loss_fn(output, target.squeeze()).item()  # sum up batch loss
-            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-            correct += pred.eq(target.view_as(pred)).sum().item()
-
-    test_loss /= len(test_loader.dataset)
-
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
-        test_loss, correct, len(test_loader.dataset),
-        100. * correct / len(test_loader.dataset)))
-
-
-# %%
-import json
-import os
-import subprocess
-import transformers
-from transformers import PreTrainedModel, AutoModelForCausalLM, PretrainedConfig
-
-def run_train():
-
-    '''
-    Main entry point for training.  Select the dataset name and metadata, as
-    well as model and training args, and you're off to the genomic races!
-
-    ### GenomicBenchmarks Metadata
-    # there are 8 datasets in this suite, choose 1 at a time, with their corresponding settings
-    # name                                num_seqs        num_classes     median len    std
-    # dummy_mouse_enhancers_ensembl       1210            2               2381          984.4
-    # demo_coding_vs_intergenomic_seqs    100_000         2               200           0
-    # demo_human_or_worm                  100_000         2               200           0
-    # human_enhancers_cohn                27791           2               500           0
-    # human_enhancers_ensembl             154842          2               269           122.6
-    # human_ensembl_regulatory            289061          3               401           184.3
-    # human_nontata_promoters             36131           2               251           0
-    # human_ocr_ensembl                   174756          2               315           108.1
-
-    '''
-    # experiment settings:
-    num_epochs = 100  # ~100 seems fine
-    max_length = 500  # max len of sequence of dataset (of what you want)
-    use_padding = True
-    dataset_name = 'human_enhancers_cohn'
-    batch_size = 256
-    learning_rate = 6e-4  # good default for Hyena
-    rc_aug = True  # reverse complement augmentation
-    add_eos = False  # add end of sentence token
-    weight_decay = 0.1
-
-    # for fine-tuning, only the 'tiny' model can fit on colab
-    pretrained_model_name = 'hyenadna-tiny-1k-seqlen'  # use None if training from scratch
-
-    # we need these for the decoder head, if using
-    use_head = True
-    n_classes = 2
-
-    # you can override with your own backbone config here if you want,
-    # otherwise we'll load the HF one by default
-    backbone_cfg = None
-
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print("Using device:", device)
-
-    # instantiate the model (pretrained here)
-    if pretrained_model_name in ['hyenadna-tiny-1k-seqlen']:
-        # use the pretrained Huggingface wrapper instead
-        model = HyenaDNAPreTrainedModel.from_pretrained(
-            './checkpoints',
-            pretrained_model_name,
-            download=True,
-            config=backbone_cfg,
-            device=device,
-            use_head=use_head,
-            n_classes=n_classes,
-        )
-
-    # from scratch
-    else:
-        model = HyenaDNAModel(**backbone_cfg, use_head=use_head, n_classes=n_classes)
-
-    # create tokenizer
-    tokenizer = CharacterTokenizer(
-        characters=['A', 'C', 'G', 'T', 'N'],  # add DNA characters, N is uncertain
-        model_max_length=max_length + 2,  # to account for special tokens, like EOS
-        add_special_tokens=False,  # we handle special tokens elsewhere
-        padding_side='left', # since HyenaDNA is causal, we pad on the left
-    )
-
-    # create datasets
-    ds_train = GenomicBenchmarkDataset(
-        max_length = max_length,
-        use_padding = use_padding,
-        split = 'train',
-        tokenizer=tokenizer,
-        dataset_name=dataset_name,
-        rc_aug=rc_aug,
-        add_eos=add_eos,
-    )
-
-    ds_test = GenomicBenchmarkDataset(
-        max_length = max_length,
-        use_padding = use_padding,
-        split = 'test',
-        tokenizer=tokenizer,
-        dataset_name=dataset_name,
-        rc_aug=rc_aug,
-        add_eos=add_eos,
-    )
-
-    train_loader = DataLoader(ds_train, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(ds_test, batch_size=batch_size, shuffle=False)
-
-    # loss function
-    loss_fn = nn.CrossEntropyLoss()
-
-    # create optimizer
-    optimizer = optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
-
-    model.to(device)
-
-    for epoch in range(num_epochs):
-        train(model, device, train_loader, optimizer, epoch, loss_fn)
-        test(model, device, test_loader, loss_fn)
-        optimizer.step()
-
-
-# %%
-# launch it!
-# run_train()  # uncomment to run
 
 # %% [markdown]
 # # Inference (450k to 1M tokens)!
@@ -1373,111 +1210,26 @@ def run_train():
 # 
 # 
 
-# %%
-import torch
-from torch.utils.data import DataLoader, Dataset
-from transformers import PreTrainedModel
-import pandas as pd
-
-# Define the dataset
-class SequenceDataset(Dataset):
-    def __init__(self, sequences, tokenizer, max_length):
-        """
-        Dataset to handle sequence inputs.
-        :param sequences: List or pandas.Series of sequences.
-        :param tokenizer: Tokenizer to process sequences.
-        :param max_length: Maximum sequence length.
-        """
-        self.sequences = sequences
-        self.tokenizer = tokenizer
-        self.max_length = max_length
-
-    def __len__(self):
-        return len(self.sequences)
-
-    def __getitem__(self, idx):
-        sequence = self.sequences[idx]
-        tokenized = self.tokenizer(
-            sequence,
-            padding="max_length",
-            truncation=True,
-            max_length=self.max_length,
-            return_tensors="pt",
-        )
-        return tokenized["input_ids"].squeeze(0)  # Remove batch dimension
-
-# Define inference loop
-def infer_loop(model, device, dataloader):
-    """Inference loop."""
-    embeddings = []
-    with torch.inference_mode():
-        for batch in dataloader:
-            batch = batch.to(device)
-            output = model(batch)
-            embeddings.append(output.cpu())
-    return torch.cat(embeddings, dim=0)
-
-# Main inference function
-def inference(sequences):
-    """
-    Function to perform inference and extract embeddings for a list or DataFrame of sequences.
-    :param sequences: List or pandas.DataFrame of sequences.
-    """
-    # Specify pretrained model
-    pretrained_model_name = 'hyenadna-tiny-1k-seqlen'
-    max_length = 500  # Adjust based on your sequences and model capacity
-    batch_size = 16  # Adjust based on available memory
-
-    # Device setup
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print("Using device:", device)
-
-    # Load pretrained model
-    model = HyenaDNAPreTrainedModel.from_pretrained(
-        './checkpoints',
-        pretrained_model_name,
-        download=False,
-        device=device,
-        use_head=False,
-    )
-    model.to(device)
-    model.eval()
-
-    # Define tokenizer
-    tokenizer = CharacterTokenizer(
-        characters=['A', 'C', 'G', 'T', 'N'],  # Valid DNA characters
-        model_max_length=max_length + 2,  # To account for special tokens
-        add_special_tokens=False,
-        padding_side='left',
-    )
-
-    # Prepare the dataset and dataloader
-    dataset = SequenceDataset(sequences, tokenizer, max_length)
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
-
-    # Run inference
-    embeddings = infer_loop(model, device, dataloader)
-
-    # Save or return embeddings
-    torch.save(embeddings, "embeddings.pt")
-    print("Embeddings saved to 'embeddings.pt'.")
-    return embeddings
-
 
 
 # %%
+import os
 import boto3
 from botocore.config import Config
 from io import StringIO
 import pandas as pd
 import torch
+from torch.utils.data import DataLoader, Dataset
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.distributed import init_process_group, destroy_process_group
+from transformers import PreTrainedModel
 
 # AWS S3 Configuration
 read_access_key = "L7J5V9NECMPRCRFLCAD7"
 read_secret_key = "AhcamdaEP7pHAJkCiklALCOh4lKd6ZcxT8HtqLuV"
 bucket_name = "metabolic-atac-peaks"
 endpoint_url = "https://rice1.osn.mghpcc.org"
-file_key = "embedding_sequences/sequences_part_1.txt" 
+file_key = "embedding_sequences/sequences_part_1.txt"
 embeddings_folder = "embeddings"
 
 # Initialize S3 client
@@ -1492,20 +1244,15 @@ s3 = boto3.client(
 def fetch_sequences_from_s3(bucket_name, file_key):
     """
     Fetch sequences from a text file in an Amazon S3 bucket.
-    :param bucket_name: Name of the S3 bucket.
-    :param file_key: Path to the file in the bucket.
-    :return: List of sequences.
     """
     print(f"Fetching file from S3: {file_key}")
     obj = s3.get_object(Bucket=bucket_name, Key=file_key)
     file_content = obj["Body"].read().decode("utf-8")
-    
-    # Assuming the file is tab-delimited with a column named 'sequence'
     df = pd.read_csv(StringIO(file_content), sep="\t")
-    
+
     if "sequence" not in df.columns:
         raise ValueError("The file does not contain a 'sequence' column.")
-    
+
     sequences = df["sequence"].tolist()
     print(f"Loaded {len(sequences)} sequences from the S3 file.")
     return sequences
@@ -1513,10 +1260,6 @@ def fetch_sequences_from_s3(bucket_name, file_key):
 def save_embeddings_to_s3(local_file_path, bucket_name, s3_folder, file_name):
     """
     Save embeddings to a specified folder in the S3 bucket.
-    :param local_file_path: Path to the local file.
-    :param bucket_name: Name of the S3 bucket.
-    :param s3_folder: Folder path within the bucket.
-    :param file_name: Name of the file to save in the bucket.
     """
     s3_key = f"{s3_folder}/{file_name}"
     try:
@@ -1525,25 +1268,45 @@ def save_embeddings_to_s3(local_file_path, bucket_name, s3_folder, file_name):
     except Exception as e:
         print(f"Error uploading to S3: {e}")
 
-def inference(sequences):
+def setup_ddp(rank, world_size):
     """
-    Function to perform inference and extract embeddings for a list of sequences.
+    Setup for distributed training.
     """
-    pretrained_model_name = 'hyenadna-tiny-1k-seqlen-2'  # Use your desired pretrained model (this is actually 32k length metahyena)
+    os.environ["MASTER_ADDR"] = "localhost"
+    os.environ["MASTER_PORT"] = "12355"
+    init_process_group("nccl", rank=rank, world_size=world_size)
 
-    max_length = 4400 # Adjust based on dataset (99th percentile is around 4300)
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print("Using device:", device)
+def cleanup_ddp():
+    """
+    Cleanup distributed training resources.
+    """
+    destroy_process_group()
 
-    # Load pretrained model (assume pre-trained HyenaDNA model is used)
-    model = HyenaDNAPreTrainedModel.from_pretrained(
+def inference(rank, world_size, sequences):
+    """
+    Perform inference using multiple GPUs.
+    """
+    setup_ddp(rank, world_size)
+
+    # Hyperparameters
+    pretrained_model_name = 'hyenadna-tiny-1k-seqlen-2'
+    max_length = 4400
+    batch_size = 16
+
+    # Device setup
+    torch.cuda.set_device(rank)
+    device = torch.device(f"cuda:{rank}")
+
+    # Load pretrained model
+    model = PreTrainedModel.from_pretrained(
         path="./checkpoints",
         model_name=pretrained_model_name,
         download=False,
         device=device,
-        use_head=False
+        use_head=False,
     )
     model.to(device)
+    model = DDP(model, device_ids=[rank])
     model.eval()
 
     # Define tokenizer
@@ -1555,7 +1318,7 @@ def inference(sequences):
     )
 
     # Define dataset and dataloader
-    class SequenceDataset(torch.utils.data.Dataset):
+    class SequenceDataset(Dataset):
         def __init__(self, sequences, tokenizer, max_length):
             self.sequences = sequences
             self.tokenizer = tokenizer
@@ -1571,12 +1334,16 @@ def inference(sequences):
                 padding="max_length",
                 truncation=True,
                 max_length=self.max_length,
-                return_tensors="pt"
+                return_tensors="pt",
             )
             return tokenized["input_ids"].squeeze(0)
 
+    # Partition the dataset across GPUs
     dataset = SequenceDataset(sequences, tokenizer, max_length)
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=16, shuffle=False)
+    sampler = torch.utils.data.distributed.DistributedSampler(
+        dataset, num_replicas=world_size, rank=rank, shuffle=False
+    )
+    dataloader = DataLoader(dataset, batch_size=batch_size, sampler=sampler)
 
     # Inference loop
     embeddings = []
@@ -1588,22 +1355,28 @@ def inference(sequences):
 
     embeddings = torch.cat(embeddings, dim=0)
 
-    # Save embeddings locally
-    local_file_path = "embeddings.pt"
-    #torch.save(embeddings, local_file_path)
-    #print(f"Embeddings saved locally at: {local_file_path}")
+    # Save embeddings locally (only rank 0)
+    if rank == 0:
+        local_file_path = f"embeddings_rank_{rank}.pt"
+        #torch.save(embeddings, local_file_path)
+        save_embeddings_to_s3(local_file_path, bucket_name, embeddings_folder, f"embeddings_rank_{rank}.pt")
 
-    # Upload embeddings to S3
-    save_embeddings_to_s3(local_file_path, bucket_name, embeddings_folder, "embeddings.pt")
+    cleanup_ddp()
 
-    return embeddings
+def run_ddp_inference(sequences, world_size):
+    """
+    Launch multi-GPU inference.
+    """
+    from torch.multiprocessing import spawn
 
-# run
+    spawn(inference, args=(world_size, sequences), nprocs=world_size)
+
+# Main execution
 if __name__ == "__main__":
     try:
         sequences = fetch_sequences_from_s3(bucket_name, file_key)
-        embeddings = inference(sequences)
+        world_size = torch.cuda.device_count()
+        print(f"Number of GPUs available: {world_size}")
+        run_ddp_inference(sequences, world_size)
     except Exception as e:
         print(f"Error: {e}")
-
-
