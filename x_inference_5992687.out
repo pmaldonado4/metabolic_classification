@@ -1,0 +1,5 @@
+ready to fetch sequences
+Fetching file from S3: embedding_sequences/peak_id_sequences.txt
+Loaded 793868 sequences from the S3 file.
+Processing chunk 1/40 with 20000 sequences.
+Error: inference() missing 1 required positional argument: 'chunk_id'

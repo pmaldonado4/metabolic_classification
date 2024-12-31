@@ -1,0 +1,7 @@
+ready to fetch sequences
+Fetching file from S3: embedding_sequences/sequences_part_1_20k.txt
+Loaded 20000 sequences from the S3 file.
+Processing chunk 1/1 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Chunk 1 successfully processed and uploaded to S3: embeddings/embeddings_chunk_1.pt

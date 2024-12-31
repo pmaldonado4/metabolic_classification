@@ -982,7 +982,7 @@ class HyenaDNAPreTrainedModel(PreTrainedModel):
 
     def forward(self, input_ids, **kwargs):
         return self.model(input_ids, **kwargs)
-
+    
     @classmethod
     def from_pretrained(cls,
                         path,
@@ -1223,7 +1223,8 @@ from torch.utils.data import DataLoader, Dataset
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
 from transformers import PreTrainedModel
-
+import torch.distributed as dist
+dist.init_process_group(backend="nccl", init_method="env://")
 # AWS S3 Configuration
 read_access_key = "L7J5V9NECMPRCRFLCAD7"
 read_secret_key = "AhcamdaEP7pHAJkCiklALCOh4lKd6ZcxT8HtqLuV"
@@ -1267,25 +1268,49 @@ def save_embeddings_to_s3(local_file_path, bucket_name, s3_folder, file_name):
         print(f"File successfully uploaded to S3: {bucket_name}/{s3_key}")
     except Exception as e:
         print(f"Error uploading to S3: {e}")
+import os
+import torch
+from torch.utils.data import DataLoader, Dataset
+from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.distributed as dist
+from torch.multiprocessing import spawn
+
+import os
+import torch
+import torch.distributed as dist
 
 def setup_ddp(rank, world_size):
     """
-    Setup for distributed training.
+    Set up the environment for Distributed Data Parallel (DDP) training.
+
+    Args:
+        rank (int): Rank of the current process.
+        world_size (int): Total number of processes (GPUs) participating in DDP.
     """
-    os.environ["MASTER_ADDR"] = "localhost"
-    os.environ["MASTER_PORT"] = "12355"
-    init_process_group("nccl", rank=rank, world_size=world_size)
+    os.environ["MASTER_ADDR"] = "localhost"  # Set master node address
+    os.environ["MASTER_PORT"] = "12355"      # Set a free port
+
+    # Check if process group is already initialized
+    if not dist.is_initialized():
+        print(f"Initializing process group for rank {rank} with world size {world_size}...")
+        dist.init_process_group(
+            backend="nccl",         # Backend optimized for GPUs
+            rank=rank,
+            world_size=world_size
+        )
+        torch.cuda.set_device(rank)  # Set the device for the current process
+    else:
+        print(f"Process group already initialized for rank {rank}!")
 
 def cleanup_ddp():
-    """
-    Cleanup distributed training resources.
-    """
-    destroy_process_group()
+    try:
+        print("Destroying process group...")
+        destroy_process_group()
+    except Exception as e:
+        print(f"Error during DDP cleanup: {e}")
 
+# Inference function
 def inference(rank, world_size, sequences):
-    """
-    Perform inference using multiple GPUs.
-    """
     setup_ddp(rank, world_size)
 
     # Hyperparameters
@@ -1294,7 +1319,6 @@ def inference(rank, world_size, sequences):
     batch_size = 16
 
     # Device setup
-    torch.cuda.set_device(rank)
     device = torch.device(f"cuda:{rank}")
 
     # Load pretrained model
@@ -1338,7 +1362,6 @@ def inference(rank, world_size, sequences):
             )
             return tokenized["input_ids"].squeeze(0)
 
-    # Partition the dataset across GPUs
     dataset = SequenceDataset(sequences, tokenizer, max_length)
     sampler = torch.utils.data.distributed.DistributedSampler(
         dataset, num_replicas=world_size, rank=rank, shuffle=False
@@ -1358,20 +1381,16 @@ def inference(rank, world_size, sequences):
     # Save embeddings locally (only rank 0)
     if rank == 0:
         local_file_path = f"embeddings_rank_{rank}.pt"
-        #torch.save(embeddings, local_file_path)
+        torch.save(embeddings, local_file_path)
         save_embeddings_to_s3(local_file_path, bucket_name, embeddings_folder, f"embeddings_rank_{rank}.pt")
 
     cleanup_ddp()
 
+# Main function to run DDP inference
 def run_ddp_inference(sequences, world_size):
-    """
-    Launch multi-GPU inference.
-    """
-    from torch.multiprocessing import spawn
+    spawn(inference, args=(world_size, sequences), nprocs=world_size, join=True)
 
-    spawn(inference, args=(world_size, sequences), nprocs=world_size)
-
-# Main execution
+# Entry point
 if __name__ == "__main__":
     try:
         sequences = fetch_sequences_from_s3(bucket_name, file_key)

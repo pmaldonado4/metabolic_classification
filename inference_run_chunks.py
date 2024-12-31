@@ -1190,180 +1190,23 @@ class CharacterTokenizer(PreTrainedTokenizer):
         return cls.from_config(cfg)
 
 # %% [markdown]
-# # Training! (and fine-tuning)
-
-# %%
-import torch.optim as optim
-
-"""
-We provide simple training code for the GenomicBenchmark datasets.
-"""
-
-
-def train(model, device, train_loader, optimizer, epoch, loss_fn, log_interval=10):
-    """Training loop."""
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data, target = data.to(device), target.to(device)
-        optimizer.zero_grad()
-        output = model(data)
-        loss = loss_fn(output, target.squeeze())
-        loss.backward()
-        optimizer.step()
-        if batch_idx % log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item()))
-
-def test(model, device, test_loader, loss_fn):
-    """Test loop."""
-    model.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, target in test_loader:
-            data, target = data.to(device), target.to(device)
-            output = model(data)
-            test_loss += loss_fn(output, target.squeeze()).item()  # sum up batch loss
-            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-            correct += pred.eq(target.view_as(pred)).sum().item()
-
-    test_loss /= len(test_loader.dataset)
-
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
-        test_loss, correct, len(test_loader.dataset),
-        100. * correct / len(test_loader.dataset)))
 
 
 # %%
-# launch it!
-# run_train()  # uncomment to run
-
-# %% [markdown]
-# # Inference (450k to 1M tokens)!
-# 
-# If all you're interested in is getting embeddings on long DNA sequences
-# (inference), then we can do that right here in Colab!
-# 
-# 
-# *   We provide an example how to load the weights from Huggingface.
-# *   On the free tier, which uses a
-# T4 GPU w/16GB of memory, we can process 450k tokens / nucleotides.
-# *   For processing 1M tokens, you'll need an A100, which Colab offers as a paid tier.
-# *   (Don't forget to run the entire notebook above too)
-# 
-# --
-# 
-# To pretrain or fine-tune the 1M long sequence model (8 layers, d_model=256),
-# you'll need 8 A100s 80GB, and all that code is in the main [github repo](https://github.com/HazyResearch/hyena-dna)!
-# 
-# 
-
-# %%
-import torch
-from torch.utils.data import DataLoader, Dataset
-from transformers import PreTrainedModel
-import pandas as pd
-
-# Define the dataset
-class SequenceDataset(Dataset):
-    def __init__(self, sequences, tokenizer, max_length):
-        """
-        Dataset to handle sequence inputs.
-        :param sequences: List or pandas.Series of sequences.
-        :param tokenizer: Tokenizer to process sequences.
-        :param max_length: Maximum sequence length.
-        """
-        self.sequences = sequences
-        self.tokenizer = tokenizer
-        self.max_length = max_length
-
-    def __len__(self):
-        return len(self.sequences)
-
-    def __getitem__(self, idx):
-        sequence = self.sequences[idx]
-        tokenized = self.tokenizer(
-            sequence,
-            padding="max_length",
-            truncation=True,
-            max_length=self.max_length,
-            return_tensors="pt",
-        )
-        return tokenized["input_ids"].squeeze(0)  # Remove batch dimension
-
-# Define inference loop
-def infer_loop(model, device, dataloader):
-    """Inference loop."""
-    embeddings = []
-    with torch.inference_mode():
-        for batch in dataloader:
-            batch = batch.to(device)
-            output = model(batch)
-            embeddings.append(output.cpu())
-    return torch.cat(embeddings, dim=0)
-
-# Main inference function
-def inference(sequences):
-    """
-    Function to perform inference and extract embeddings for a list or DataFrame of sequences.
-    :param sequences: List or pandas.DataFrame of sequences.
-    """
-    # Specify pretrained model
-    pretrained_model_name = 'hyenadna-tiny-1k-seqlen'
-    max_length = 500  # Adjust based on your sequences and model capacity
-    batch_size = 16  # Adjust based on available memory
-
-    # Device setup
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print("Using device:", device)
-
-    # Load pretrained model
-    model = HyenaDNAPreTrainedModel.from_pretrained(
-        './checkpoints',
-        pretrained_model_name,
-        download=False,
-        device=device,
-        use_head=False,
-    )
-    model.to(device)
-    model.eval()
-
-    # Define tokenizer
-    tokenizer = CharacterTokenizer(
-        characters=['A', 'C', 'G', 'T', 'N'],  # Valid DNA characters
-        model_max_length=max_length + 2,  # To account for special tokens
-        add_special_tokens=False,
-        padding_side='left',
-    )
-
-    # Prepare the dataset and dataloader
-    dataset = SequenceDataset(sequences, tokenizer, max_length)
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
-
-    # Run inference
-    embeddings = infer_loop(model, device, dataloader)
-
-    # Save or return embeddings
-    torch.save(embeddings, "embeddings.pt")
-    print("Embeddings saved to 'embeddings.pt'.")
-    return embeddings
 
 
-
-# %%
 import boto3
 from botocore.config import Config
 from io import StringIO
 import pandas as pd
 import torch
-
+from io import BytesIO
 # AWS S3 Configuration
 read_access_key = "L7J5V9NECMPRCRFLCAD7"
 read_secret_key = "AhcamdaEP7pHAJkCiklALCOh4lKd6ZcxT8HtqLuV"
 bucket_name = "metabolic-atac-peaks"
 endpoint_url = "https://rice1.osn.mghpcc.org"
-file_key = "embedding_sequences/sequences_part_1_50k.txt" 
+file_key = "embedding_sequences/peak_id_sequences.txt"
 embeddings_folder = "embeddings"
 
 # Initialize S3 client
@@ -1374,13 +1217,10 @@ s3 = boto3.client(
     endpoint_url=endpoint_url,
     config=Config(signature_version="s3v4"),
 )
-
+print("ready to fetch sequences")
 def fetch_sequences_from_s3(bucket_name, file_key):
     """
     Fetch sequences from a text file in an Amazon S3 bucket.
-    :param bucket_name: Name of the S3 bucket.
-    :param file_key: Path to the file in the bucket.
-    :return: List of sequences.
     """
     print(f"Fetching file from S3: {file_key}")
     obj = s3.get_object(Bucket=bucket_name, Key=file_key)
@@ -1399,10 +1239,6 @@ def fetch_sequences_from_s3(bucket_name, file_key):
 def save_embeddings_to_s3(local_file_path, bucket_name, s3_folder, file_name):
     """
     Save embeddings to a specified folder in the S3 bucket.
-    :param local_file_path: Path to the local file.
-    :param bucket_name: Name of the S3 bucket.
-    :param s3_folder: Folder path within the bucket.
-    :param file_name: Name of the file to save in the bucket.
     """
     s3_key = f"{s3_folder}/{file_name}"
     try:
@@ -1410,18 +1246,57 @@ def save_embeddings_to_s3(local_file_path, bucket_name, s3_folder, file_name):
         print(f"File successfully uploaded to S3: {bucket_name}/{s3_key}")
     except Exception as e:
         print(f"Error uploading to S3: {e}")
+def process_sequences_in_chunks(sequences, chunk_size=20000):
+    """
+    Process sequences in chunks to extract embeddings and save them to S3.
+    Clears memory after saving each chunk to avoid memory issues.
+    """
+    num_chunks = len(sequences) // chunk_size + (1 if len(sequences) % chunk_size > 0 else 0)
+    
+    for i in range(num_chunks):
+        start_idx = i * chunk_size
+        end_idx = min((i + 1) * chunk_size, len(sequences))
+        chunk = sequences[start_idx:end_idx]
+        
+        print(f"Processing chunk {i + 1}/{num_chunks} with {len(chunk)} sequences.")
+        
+        # Generate embeddings for the chunk
+        chunk_embeddings = inference(chunk)
+
+        # Save chunk embeddings to S3
+        save_embeddings_to_s3(chunk_embeddings, bucket_name, embeddings_folder, f"embeddings_chunk_{i + 1}.pt")
+        
+        # Clear the chunk_embeddings from memory
+        del chunk_embeddings
+        torch.cuda.empty_cache()
+        print(f"Chunk {i + 1} processed and memory cleared.")
+
+def save_embeddings_to_s3(embeddings, bucket_name, s3_folder, file_name):
+    """
+    Save embeddings to a specified folder in the S3 bucket without saving locally.
+    """
+    s3_key = f"{s3_folder}/{file_name}"
+    try:
+        # Save the tensor directly to S3
+        buffer = BytesIO()
+        torch.save(embeddings, buffer)
+        buffer.seek(0)
+        s3.upload_fileobj(buffer, bucket_name, s3_key)
+        print(f"Embeddings successfully uploaded to S3: {bucket_name}/{s3_key}")
+    except Exception as e:
+        print(f"Error uploading to S3: {e}")
 
 def inference(sequences):
     """
     Function to perform inference and extract embeddings for a list of sequences.
     """
-    pretrained_model_name = 'hyenadna-tiny-1k-seqlen-2'  # Use your desired pretrained model (this is actually 32k length metahyena)
+    pretrained_model_name = 'hyenadna-tiny-1k-seqlen-2'
 
-    max_length = 4400 # Adjust based on dataset (99th percentile is around 4300)
+    max_length = 4400
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print("Using device:", device)
 
-    # Load pretrained model (assume pre-trained HyenaDNA model is used)
+    # Load pretrained model
     model = HyenaDNAPreTrainedModel.from_pretrained(
         path="./checkpoints",
         model_name=pretrained_model_name,
@@ -1462,34 +1337,26 @@ def inference(sequences):
             return tokenized["input_ids"].squeeze(0)
 
     dataset = SequenceDataset(sequences, tokenizer, max_length)
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=16, shuffle=False)
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size=8, shuffle=False)
 
     # Inference loop
-    embeddings = []
+    chunk_embeddings = []  # Initialize list to store all embeddings for the chunk
     with torch.inference_mode():
-        for batch in dataloader:
+        for batch_idx, batch in enumerate(dataloader):
             batch = batch.to(device)
-            output = model(batch)
-            embeddings.append(output.cpu())
+            output = model(batch)  # Output shape: (batch_size, embedding_dim)
+            chunk_embeddings.append(output.cpu())  # Append the batch's embeddings to the list
 
-    embeddings = torch.cat(embeddings, dim=0)
+    # Concatenate all embeddings into a single tensor
+    chunk_embeddings = torch.cat(chunk_embeddings, dim=0)
+    print(f"Final chunk embeddings shape: {chunk_embeddings.shape}")
 
-    # Save embeddings locally
-    local_file_path = "embeddings.pt"
-    #torch.save(embeddings, local_file_path)
-    #print(f"Embeddings saved locally at: {local_file_path}")
+    return chunk_embeddings
 
-    # Upload embeddings to S3
-    save_embeddings_to_s3(local_file_path, bucket_name, embeddings_folder, "embeddings.pt")
-
-    return embeddings
-
-# run
+# Main script
 if __name__ == "__main__":
     try:
         sequences = fetch_sequences_from_s3(bucket_name, file_key)
-        embeddings = inference(sequences)
+        process_sequences_in_chunks(sequences, chunk_size=20000)
     except Exception as e:
         print(f"Error: {e}")
-
-

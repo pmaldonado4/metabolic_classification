@@ -1,0 +1,11 @@
+ready to fetch sequences
+Fetching file from S3: embedding_sequences/peak_id_sequences.txt
+Loaded 793868 sequences from the S3 file.
+Processing chunk 1/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Chunk 1 successfully processed and uploaded to S3: embeddings/embeddings_chunk_1.pt
+Processing chunk 2/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Error: [enforce fail at alloc_cpu.cpp:117] err == 0. DefaultCPUAllocator: can't allocate memory: you tried to allocate 90112000000 bytes. Error code 12 (Cannot allocate memory)

@@ -1,0 +1,243 @@
+ready to fetch sequences
+Fetching file from S3: embedding_sequences/peak_id_sequences.txt
+Loaded 793868 sequences from the S3 file.
+Processing chunk 1/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_1.pt
+Chunk 1 processed and memory cleared.
+Processing chunk 2/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_2.pt
+Chunk 2 processed and memory cleared.
+Processing chunk 3/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_3.pt
+Chunk 3 processed and memory cleared.
+Processing chunk 4/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_4.pt
+Chunk 4 processed and memory cleared.
+Processing chunk 5/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_5.pt
+Chunk 5 processed and memory cleared.
+Processing chunk 6/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_6.pt
+Chunk 6 processed and memory cleared.
+Processing chunk 7/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_7.pt
+Chunk 7 processed and memory cleared.
+Processing chunk 8/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_8.pt
+Chunk 8 processed and memory cleared.
+Processing chunk 9/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_9.pt
+Chunk 9 processed and memory cleared.
+Processing chunk 10/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_10.pt
+Chunk 10 processed and memory cleared.
+Processing chunk 11/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_11.pt
+Chunk 11 processed and memory cleared.
+Processing chunk 12/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_12.pt
+Chunk 12 processed and memory cleared.
+Processing chunk 13/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_13.pt
+Chunk 13 processed and memory cleared.
+Processing chunk 14/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_14.pt
+Chunk 14 processed and memory cleared.
+Processing chunk 15/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_15.pt
+Chunk 15 processed and memory cleared.
+Processing chunk 16/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_16.pt
+Chunk 16 processed and memory cleared.
+Processing chunk 17/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_17.pt
+Chunk 17 processed and memory cleared.
+Processing chunk 18/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_18.pt
+Chunk 18 processed and memory cleared.
+Processing chunk 19/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_19.pt
+Chunk 19 processed and memory cleared.
+Processing chunk 20/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_20.pt
+Chunk 20 processed and memory cleared.
+Processing chunk 21/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_21.pt
+Chunk 21 processed and memory cleared.
+Processing chunk 22/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_22.pt
+Chunk 22 processed and memory cleared.
+Processing chunk 23/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_23.pt
+Chunk 23 processed and memory cleared.
+Processing chunk 24/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_24.pt
+Chunk 24 processed and memory cleared.
+Processing chunk 25/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_25.pt
+Chunk 25 processed and memory cleared.
+Processing chunk 26/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_26.pt
+Chunk 26 processed and memory cleared.
+Processing chunk 27/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_27.pt
+Chunk 27 processed and memory cleared.
+Processing chunk 28/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_28.pt
+Chunk 28 processed and memory cleared.
+Processing chunk 29/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_29.pt
+Chunk 29 processed and memory cleared.
+Processing chunk 30/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_30.pt
+Chunk 30 processed and memory cleared.
+Processing chunk 31/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_31.pt
+Chunk 31 processed and memory cleared.
+Processing chunk 32/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_32.pt
+Chunk 32 processed and memory cleared.
+Processing chunk 33/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_33.pt
+Chunk 33 processed and memory cleared.
+Processing chunk 34/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_34.pt
+Chunk 34 processed and memory cleared.
+Processing chunk 35/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_35.pt
+Chunk 35 processed and memory cleared.
+Processing chunk 36/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_36.pt
+Chunk 36 processed and memory cleared.
+Processing chunk 37/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_37.pt
+Chunk 37 processed and memory cleared.
+Processing chunk 38/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_38.pt
+Chunk 38 processed and memory cleared.
+Processing chunk 39/40 with 20000 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([20000, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_39.pt
+Chunk 39 processed and memory cleared.
+Processing chunk 40/40 with 13868 sequences.
+Using device: cuda
+Loaded pretrained weights ok!
+Final chunk embeddings shape: torch.Size([13868, 4400, 256])
+Embeddings successfully uploaded to S3: metabolic-atac-peaks/embeddings/embeddings_chunk_40.pt
+Chunk 40 processed and memory cleared.
