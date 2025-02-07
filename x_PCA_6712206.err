@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/u/pmaldonadocatala/metabolic_classification/parquet_merging.py", line 37, in <module>
+    dataset = ds.dataset(parquet_files, format="parquet", filesystem="s3", endpoint_override=endpoint_url)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: dataset() got an unexpected keyword argument 'endpoint_override'
+srun: error: gpub034: task 0: Exited with exit code 1

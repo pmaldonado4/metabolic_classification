@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/u/pmaldonadocatala/metabolic_classification/parquet_merging.py", line 8, in <module>
+    df = pd.read_parquet('../../01_data/test_parquet/pooled_embeddings_chunk_12.parquet')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/pmaldonadocatala/.conda/envs/ml_env_2/lib/python3.11/site-packages/pandas/io/parquet.py", line 667, in read_parquet
+    return impl.read(
+           ^^^^^^^^^^
+  File "/u/pmaldonadocatala/.conda/envs/ml_env_2/lib/python3.11/site-packages/pandas/io/parquet.py", line 267, in read
+    path_or_handle, handles, filesystem = _get_path_or_handle(
+                                          ^^^^^^^^^^^^^^^^^^^^
+  File "/u/pmaldonadocatala/.conda/envs/ml_env_2/lib/python3.11/site-packages/pandas/io/parquet.py", line 140, in _get_path_or_handle
+    handles = get_handle(
+              ^^^^^^^^^^^
+  File "/u/pmaldonadocatala/.conda/envs/ml_env_2/lib/python3.11/site-packages/pandas/io/common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '../../01_data/test_parquet/pooled_embeddings_chunk_12.parquet'
+srun: error: gpub035: task 0: Exited with exit code 1

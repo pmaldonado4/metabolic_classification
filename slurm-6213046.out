@@ -1,0 +1,91 @@
+2025-01-23 15:13:38,067 - distributed.nanny - INFO -         Start Nanny at: 'tcp://141.142.254.199:40041'
+2025-01-23 15:13:38,079 - distributed.nanny - INFO -         Start Nanny at: 'tcp://141.142.254.199:44453'
+2025-01-23 15:13:38,082 - distributed.nanny - INFO -         Start Nanny at: 'tcp://141.142.254.199:42273'
+2025-01-23 15:13:38,139 - distributed.nanny - INFO -         Start Nanny at: 'tcp://141.142.254.199:35563'
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Start worker at: tcp://141.142.254.199:42767
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Start worker at: tcp://141.142.254.199:42251
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          Listening to: tcp://141.142.254.199:42767
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Start worker at: tcp://141.142.254.199:34211
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Start worker at: tcp://141.142.254.199:32875
+2025-01-23 15:13:39,470 - distributed.worker - INFO -           Worker name:           SLURMCluster-3-2
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          Listening to: tcp://141.142.254.199:42251
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          Listening to: tcp://141.142.254.199:34211
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          dashboard at:      141.142.254.199:37243
+2025-01-23 15:13:39,470 - distributed.worker - INFO -           Worker name:           SLURMCluster-3-1
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          Listening to: tcp://141.142.254.199:32875
+2025-01-23 15:13:39,470 - distributed.worker - INFO -           Worker name:           SLURMCluster-3-0
+2025-01-23 15:13:39,470 - distributed.worker - INFO - Waiting to connect to: tcp://141.142.254.166:42167
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          dashboard at:      141.142.254.199:42133
+2025-01-23 15:13:39,470 - distributed.worker - INFO -           Worker name:           SLURMCluster-3-3
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          dashboard at:      141.142.254.199:34269
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:39,470 - distributed.worker - INFO - Waiting to connect to: tcp://141.142.254.166:42167
+2025-01-23 15:13:39,470 - distributed.worker - INFO -          dashboard at:      141.142.254.199:43383
+2025-01-23 15:13:39,470 - distributed.worker - INFO - Waiting to connect to: tcp://141.142.254.166:42167
+2025-01-23 15:13:39,470 - distributed.worker - INFO -               Threads:                          1
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:39,470 - distributed.worker - INFO - Waiting to connect to: tcp://141.142.254.166:42167
+2025-01-23 15:13:39,470 - distributed.worker - INFO -               Threads:                          1
+2025-01-23 15:13:39,470 - distributed.worker - INFO -                Memory:                   3.73 GiB
+2025-01-23 15:13:39,470 - distributed.worker - INFO -               Threads:                          1
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Local Directory: /tmp/dask-scratch-space/worker-45r8e7qt
+2025-01-23 15:13:39,470 - distributed.worker - INFO -               Threads:                          1
+2025-01-23 15:13:39,470 - distributed.worker - INFO -                Memory:                   3.73 GiB
+2025-01-23 15:13:39,470 - distributed.worker - INFO -                Memory:                   3.73 GiB
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Local Directory: /tmp/dask-scratch-space/worker-v9w38ymg
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Local Directory: /tmp/dask-scratch-space/worker-vx0oz4_u
+2025-01-23 15:13:39,470 - distributed.worker - INFO -                Memory:                   3.73 GiB
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:39,470 - distributed.worker - INFO -       Local Directory: /tmp/dask-scratch-space/worker-q1ae3caf
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:39,470 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:41,005 - distributed.worker - INFO - Starting Worker plugin shuffle
+2025-01-23 15:13:41,005 - distributed.worker - INFO -         Registered to: tcp://141.142.254.166:42167
+2025-01-23 15:13:41,005 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:41,006 - distributed.worker - INFO - Starting Worker plugin shuffle
+2025-01-23 15:13:41,006 - distributed.core - INFO - Starting established connection to tcp://141.142.254.166:42167
+2025-01-23 15:13:41,006 - distributed.worker - INFO -         Registered to: tcp://141.142.254.166:42167
+2025-01-23 15:13:41,006 - distributed.worker - INFO - Starting Worker plugin shuffle
+2025-01-23 15:13:41,006 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:41,006 - distributed.worker - INFO -         Registered to: tcp://141.142.254.166:42167
+2025-01-23 15:13:41,006 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:41,007 - distributed.core - INFO - Starting established connection to tcp://141.142.254.166:42167
+2025-01-23 15:13:41,007 - distributed.worker - INFO - Starting Worker plugin shuffle
+2025-01-23 15:13:41,007 - distributed.core - INFO - Starting established connection to tcp://141.142.254.166:42167
+2025-01-23 15:13:41,007 - distributed.worker - INFO -         Registered to: tcp://141.142.254.166:42167
+2025-01-23 15:13:41,007 - distributed.worker - INFO - -------------------------------------------------
+2025-01-23 15:13:41,008 - distributed.core - INFO - Starting established connection to tcp://141.142.254.166:42167
+2025-01-23 15:18:00,043 - distributed.core - INFO - Connection to tcp://141.142.254.166:42167 has been closed.
+2025-01-23 15:18:00,044 - distributed.core - INFO - Connection to tcp://141.142.254.166:42167 has been closed.
+2025-01-23 15:18:00,044 - distributed.worker - INFO - Stopping worker at tcp://141.142.254.199:34211. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,044 - distributed.worker - INFO - Stopping worker at tcp://141.142.254.199:32875. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,044 - distributed.core - INFO - Connection to tcp://141.142.254.166:42167 has been closed.
+2025-01-23 15:18:00,045 - distributed.worker - INFO - Stopping worker at tcp://141.142.254.199:42767. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,046 - distributed.core - INFO - Connection to tcp://141.142.254.166:42167 has been closed.
+2025-01-23 15:18:00,047 - distributed.worker - INFO - Stopping worker at tcp://141.142.254.199:42251. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,055 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://141.142.254.199:42273'. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,055 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://141.142.254.199:44453'. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,055 - distributed.worker - INFO - Removing Worker plugin shuffle
+2025-01-23 15:18:00,056 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://141.142.254.199:35563'. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,056 - distributed.worker - INFO - Removing Worker plugin shuffle
+2025-01-23 15:18:00,056 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://141.142.254.199:40041'. Reason: worker-handle-scheduler-connection-broken
+2025-01-23 15:18:00,057 - distributed.worker - INFO - Removing Worker plugin shuffle
+2025-01-23 15:18:00,058 - distributed.worker - INFO - Removing Worker plugin shuffle
+2025-01-23 15:18:00,058 - distributed.nanny - INFO - Worker closed
+2025-01-23 15:18:00,058 - distributed.nanny - INFO - Worker closed
+2025-01-23 15:18:00,060 - distributed.nanny - INFO - Worker closed
+2025-01-23 15:18:00,060 - distributed.nanny - INFO - Worker closed
+2025-01-23 15:18:02,062 - distributed.nanny - ERROR - Worker process died unexpectedly
+2025-01-23 15:18:02,095 - distributed.nanny - ERROR - Worker process died unexpectedly
+2025-01-23 15:18:02,330 - distributed.nanny - INFO - Closing Nanny at 'tcp://141.142.254.199:40041'. Reason: nanny-close-gracefully
+2025-01-23 15:18:02,331 - distributed.nanny - INFO - Closing Nanny at 'tcp://141.142.254.199:35563'. Reason: nanny-close-gracefully
+2025-01-23 15:18:02,332 - distributed.nanny - INFO - Closing Nanny at 'tcp://141.142.254.199:44453'. Reason: nanny-close-gracefully
+2025-01-23 15:18:02,332 - distributed.nanny - INFO - Closing Nanny at 'tcp://141.142.254.199:42273'. Reason: nanny-close-gracefully
+2025-01-23 15:18:02,332 - distributed.nanny - INFO - Nanny at 'tcp://141.142.254.199:40041' closed.
+2025-01-23 15:18:02,332 - distributed.nanny - INFO - Nanny at 'tcp://141.142.254.199:35563' closed.
+2025-01-23 15:18:02,332 - distributed.nanny - INFO - Nanny at 'tcp://141.142.254.199:44453' closed.
+2025-01-23 15:18:02,332 - distributed.nanny - INFO - Nanny at 'tcp://141.142.254.199:42273' closed.
+2025-01-23 15:18:02,333 - distributed.dask_worker - INFO - End worker

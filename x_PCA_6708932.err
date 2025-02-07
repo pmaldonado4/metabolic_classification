@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/u/pmaldonadocatala/metabolic_classification/PCA_reduction.py", line 8, in <module>
+    from sklearn.decomposition import PCA
+ModuleNotFoundError: No module named 'sklearn'
+srun: error: gpub049: task 0: Exited with exit code 1

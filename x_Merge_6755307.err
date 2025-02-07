@@ -1,0 +1,2 @@
+srun: error: gpub073: task 0: Out Of Memory
+slurmstepd: error: Detected 1 oom_kill event in StepId=6755307.0. Some of the step tasks have been OOM Killed.
