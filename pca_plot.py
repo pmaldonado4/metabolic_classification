@@ -7,12 +7,15 @@ from io import BytesIO
 from botocore.config import Config
 from sklearn.decomposition import IncrementalPCA
 import matplotlib.pyplot as plt
-
-# **AWS S3 Configuration**
-read_access_key = "TXZ5TA2AZQIO2UPPL7LS"
-read_secret_key = "GcQMOd2U1NS4FIXcez6mBI4Fx8xzULi2rcfcW18I"
-bucket_name = "metabolic-atac-peaks"
-endpoint_url = "https://rice1.osn.mghpcc.org"
+from dotenv import load_dotenv
+import os
+# Load environment variables from .env file
+load_dotenv()
+# Access credentials securely
+read_access_key = os.getenv("AWS_ACCESS_KEY_ID")
+read_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+bucket_name = os.getenv("AWS_BUCKET_NAME")
+endpoint_url = os.getenv("AWS_ENDPOINT_URL")
 
 # **Initialize S3 client**
 s3 = boto3.client(
