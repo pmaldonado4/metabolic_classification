@@ -1,5 +1,0 @@
-Loading metadata from dataset/features.csv...
-Metadata loaded: (793868, 1)
-Found 40 embedding chunks.
-Processing chunk 1/40: pooled_embeddings/pooled_embeddings_chunk_12.csv
-Warning: Row mismatch! (20000 != 793868)

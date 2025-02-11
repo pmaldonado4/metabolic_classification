@@ -1,6 +1,0 @@
-Loading embeddings from master_embeddings/merged_embeddings.parquet...
-Embeddings loaded. Shape: (793868, 4400)
-Loading metadata from dataset/features.csv...
-Metadata loaded. Shape: (793868, 1)
-Row counts match. Proceeding with merging.
-Final dataset shape: (793868, 4401)
