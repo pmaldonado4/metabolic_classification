@@ -8,8 +8,11 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --gpus=1
 #SBATCH --mem=100G
-#SBATCH --time=03:00:00
+#SBATCH --time=06:00:00
 #SBATCH --account=bdhi-delta-gpu
+
+# Set library path for correct `libstdc++.so.6`
+export LD_LIBRARY_PATH=/sw/external/cpe/cpe-23.03-rhel-8-6-rpm/opt/cray/pe/gcc/12.2.0/snos/lib64:$LD_LIBRARY_PATH
 
 # Source Conda environment setup
 source /sw/external/python/anaconda3/etc/profile.d/conda.sh

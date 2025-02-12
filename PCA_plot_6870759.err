@@ -1,3 +1,0 @@
-srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
-slurmstepd: error: *** STEP 6870759.0 ON gpub028 CANCELLED AT 2025-02-11T11:53:20 DUE TO TIME LIMIT ***
-slurmstepd: error: *** JOB 6870759 ON gpub028 CANCELLED AT 2025-02-11T11:53:20 DUE TO TIME LIMIT ***
