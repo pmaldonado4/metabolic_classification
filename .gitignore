@@ -11,10 +11,10 @@ aws_credentials.json
 __pycache__/
 *.pyc
 *.pyo
-*.out
-*.err
+
 # Ignore log files
 *.log
-
+*.out
+*.err
 # Ignore VS Code settings (optional)
 .vscode/
