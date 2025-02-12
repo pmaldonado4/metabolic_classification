@@ -5,11 +5,15 @@ import pyarrow.parquet as pq
 from io import BytesIO  # <-- Fix: Use BytesIO instead of StringIO
 from botocore.config import Config
 
-# AWS S3 Configuration
-read_access_key = "L7J5V9NECMPRCRFLCAD7"
-read_secret_key = "AhcamdaEP7pHAJkCiklALCOh4lKd6ZcxT8HtqLuV"
-bucket_name = "metabolic-atac-peaks"
-endpoint_url = "https://rice1.osn.mghpcc.org"
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+read_access_key = os.getenv("AWS_ACCESS_KEY_ID")
+read_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+bucket_name = os.getenv("AWS_BUCKET_NAME")
+endpoint_url = os.getenv("AWS_ENDPOINT_URL")
 
 # Initialize S3 client
 s3 = boto3.client(

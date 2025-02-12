@@ -8,12 +8,15 @@ from botocore.config import Config
 
 
 # %%
-# Access keys
-read_access_key = "TXZ5TA2AZQIO2UPPL7LS"
-read_secret_key = "GcQMOd2U1NS4FIXcez6mBI4Fx8xzULi2rcfcW18I"
-bucket_name = "metabolic-atac-peaks"
-endpoint_url = "https://rice1.osn.mghpcc.org"
+from dotenv import load_dotenv
+import os
 
+# Load environment variables from .env file
+load_dotenv()
+read_access_key = os.getenv("AWS_ACCESS_KEY_ID")
+read_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+bucket_name = os.getenv("AWS_BUCKET_NAME")
+endpoint_url = os.getenv("AWS_ENDPOINT_URL")
 # Create S3 client
 s3 = boto3.client(
     "s3",
